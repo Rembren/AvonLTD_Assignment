@@ -67,6 +67,12 @@ class SongDataFragment : Fragment() {
     return binding.root
   }
 
+  override fun onResume() {
+    super.onResume()
+    activity?.window?.statusBarColor = songDataKt?.gradientColor!![0]
+    activity?.window?.navigationBarColor = songDataKt?.gradientColor!![2]
+  }
+
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null

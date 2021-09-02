@@ -6,11 +6,8 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
 import com.rembren.avonltd_assignment.R
@@ -57,6 +54,8 @@ class MainActivity : AppCompatActivity() {
       viewPager.adapter = MyViewPagerAdapter(
         this,
         newArray)
+      viewPager.currentItem = Integer.MAX_VALUE / 2
+
     }
   }
 

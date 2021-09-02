@@ -2,7 +2,6 @@ package com.rembren.avonltd_assignment.classes
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.media.MediaMetadataRetriever
 import com.rembren.avonltd_assignment.models.SongDataKt
 import com.rembren.avonltd_assignment.models.SongDataKt.Companion.COLOR_ARRAY_SIZE
@@ -54,7 +53,7 @@ class SongLoaderKt(private val defaultThumbnail: Bitmap, private val startDirect
         listOfSongs.add(SongDataKt(
           file,
           thumbnail,
-          getRandomColors(thumbnail)))
+          getGradientColors(thumbnail)))
       }
     }
     return listOfSongs.toTypedArray()
@@ -96,13 +95,14 @@ class SongLoaderKt(private val defaultThumbnail: Bitmap, private val startDirect
     }
   }
 
-  private fun getRandomColors(bitmap: Bitmap): IntArray {
+  private fun getGradientColors(bitmap: Bitmap): IntArray {
     val result = ArrayList<Int>(COLOR_ARRAY_SIZE)
     val random = Random()
 
     for (iteration in 0 until COLOR_ARRAY_SIZE) {
       val randomX = random.nextInt(bitmap.width)
       val randomY = random.nextInt(bitmap.height)
+
       result.add(bitmap.getPixel(randomX, randomY))
     }
 
