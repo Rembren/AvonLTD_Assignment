@@ -1,4 +1,4 @@
-package com.rembren.avonltd_assignment.model;
+package com.rembren.avonltd_assignment.models;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
