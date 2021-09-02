@@ -1,13 +1,14 @@
-package com.rembren.avonltd_assignment.models
+package com.rembren.avonltd_assignment.classes
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.MediaMetadataRetriever
-import com.rembren.avonltd_assignment.classes.SongDataKt
-import com.rembren.avonltd_assignment.classes.SongDataKt.Companion.COLOR_ARRAY_SIZE
+import com.rembren.avonltd_assignment.models.SongDataKt
+import com.rembren.avonltd_assignment.models.SongDataKt.Companion.COLOR_ARRAY_SIZE
 import java.io.File
 import java.util.*
+import java.util.Collections.shuffle
 import java.util.concurrent.Executors
 import kotlin.collections.ArrayList
 
@@ -22,9 +23,11 @@ class SongLoaderKt(private val defaultThumbnail: Bitmap, private val startDirect
   private val emptySongDataArray: Array<SongDataKt> = emptyArray()
 
   fun loadData(callback: (Array<SongDataKt>) -> Unit) {
+
     val executor = Executors.newSingleThreadExecutor()
     val worker = Runnable {
       val result = searchForSongs(startDirectory)
+      shuffle(result.toMutableList())
       callback.invoke(result)
     }
     executor.execute(worker)
@@ -47,6 +50,7 @@ class SongLoaderKt(private val defaultThumbnail: Bitmap, private val startDirect
 
       if (correctFileExtension(file.name)) {
         val thumbnail = getThumbnail(file)
+
         listOfSongs.add(SongDataKt(
           file,
           thumbnail,
@@ -92,18 +96,17 @@ class SongLoaderKt(private val defaultThumbnail: Bitmap, private val startDirect
     }
   }
 
-  private fun getRandomColors(bitmap: Bitmap): Array<Color> {
-    val result = ArrayList<Color>(COLOR_ARRAY_SIZE)
+  private fun getRandomColors(bitmap: Bitmap): IntArray {
+    val result = ArrayList<Int>(COLOR_ARRAY_SIZE)
     val random = Random()
 
     for (iteration in 0 until COLOR_ARRAY_SIZE) {
       val randomX = random.nextInt(bitmap.width)
       val randomY = random.nextInt(bitmap.height)
-      val pixel = bitmap.getPixel(randomX, randomY)
-
-      result.add(Color.valueOf(pixel))
+      result.add(bitmap.getPixel(randomX, randomY))
     }
-    return result.toTypedArray()
+
+    return result.toIntArray()
   }
 
   /**

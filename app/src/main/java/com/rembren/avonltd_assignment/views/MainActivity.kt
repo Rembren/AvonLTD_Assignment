@@ -10,6 +10,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
 import com.rembren.avonltd_assignment.R
 import com.rembren.avonltd_assignment.adapters.MyViewPagerAdapter
@@ -17,19 +19,22 @@ import com.rembren.avonltd_assignment.databinding.ActivityMainBinding
 import com.rembren.avonltd_assignment.viewmodels.MainViewModel
 
 
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
 
   companion object {
     private const val PERMISSION_REQUEST_CODE: Int = 2143
   }
 
-  private val mainViewModel: MainViewModel by viewModels()
+  private val mainViewModel: MainViewModel by lazy {
+    ViewModelProviders.of(this)[MainViewModel::class.java]
+  }
 
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     val mainBinding =
       DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+    mainBinding.mainActivity = this
 
     if (askForPermissions())
       loadData()
