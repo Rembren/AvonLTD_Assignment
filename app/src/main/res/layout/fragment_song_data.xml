@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:paddingHorizontal="50dp"
-            android:text="@{Fragment.songDataKt.file.name}"
+            android:text="@{Fragment.songDataKt.nameWithoutExtension}"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/white"

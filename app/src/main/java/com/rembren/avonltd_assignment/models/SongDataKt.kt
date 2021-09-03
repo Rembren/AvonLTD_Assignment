@@ -1,34 +1,38 @@
 package com.rembren.avonltd_assignment.models
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import java.io.File
 
-class SongDataKt(val file: File, val thumbnail: Bitmap?, val gradientColor: IntArray) {
+/**
+ * Data class, contains most of the important information required to represent song on the
+ * screen
+ */
+class SongDataKt(private val file: File, val thumbnail: Bitmap?, val gradientColor: IntArray) {
 
-  companion object {
-    const val COLOR_ARRAY_SIZE: Int = 3
-  }
+  val nameWithoutExtension: String = file.nameWithoutExtension
 
+  /**
+   * This gradient drawable will be used as a background for fragment which displays
+   * this data object
+   */
   val gradientDrawable: GradientDrawable = GradientDrawable().apply {
     gradientType = GradientDrawable.LINEAR_GRADIENT
     orientation = GradientDrawable.Orientation.TOP_BOTTOM
     shape = GradientDrawable.RECTANGLE
-    //orientation = GradientDrawable.Orientation.TL_BR
-    setGradientCenter(0.5F, 0.4F)
     colors = gradientColor
-    gradientRadius = 1200F
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      innerRadiusRatio = 0.4F
-      thicknessRatio = 0.3F
-    }
   }
 
+  /**
+   * debugging stuff
+   */
   override fun toString(): String {
-    return "file name: ${file.name}; color: $gradientColor thumbnail not null: ${thumbnail != null}"
+    return "file name: ${file.nameWithoutExtension}; color: $gradientColor thumbnail not null: ${thumbnail != null}"
   }
 
+  companion object {
+    const val GRADIENT_COLORS_NUMBER: Int = 3
+    const val TOP_COLOR_INDEX = 0
+    const val BOTTOM_COLOR_INDEX = 2
+  }
 }
