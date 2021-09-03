@@ -17,7 +17,7 @@ import com.rembren.avonltd_assignment.databinding.ActivityMainBinding
 import com.rembren.avonltd_assignment.viewmodels.MainViewModel
 
 
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
 
   companion object {
     private const val PERMISSION_REQUEST_CODE: Int = 2143
