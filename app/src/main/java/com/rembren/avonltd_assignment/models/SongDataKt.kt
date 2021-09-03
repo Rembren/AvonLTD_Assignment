@@ -10,7 +10,19 @@ import java.io.File
  */
 class SongDataKt(private val file: File, val thumbnail: Bitmap?, val gradientColor: IntArray) {
 
-  val nameWithoutExtension: String = file.nameWithoutExtension
+  var songName: String
+  var authorName: String
+
+  init {
+    val stringArray = file.nameWithoutExtension.split(" - ")
+    if (stringArray.size > 1) {
+      songName = stringArray[1]
+      authorName = stringArray[0]
+    } else {
+      songName = stringArray[0]
+      authorName = "Unknown"
+    }
+  }
 
   /**
    * This gradient drawable will be used as a background for fragment which displays
