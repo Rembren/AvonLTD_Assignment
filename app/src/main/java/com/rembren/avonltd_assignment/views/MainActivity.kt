@@ -6,10 +6,9 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.widget.ViewPager2
 import com.rembren.avonltd_assignment.R
 import com.rembren.avonltd_assignment.adapters.MyViewPagerAdapter
@@ -23,13 +22,16 @@ class MainActivity : AppCompatActivity() {
     private const val PERMISSION_REQUEST_CODE: Int = 2143
   }
 
-  private val mainViewModel: MainViewModel by viewModels()
+  private val mainViewModel: MainViewModel by lazy {
+    ViewModelProviders.of(this)[MainViewModel::class.java]
+  }
 
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     val mainBinding =
       DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+    mainBinding.mainActivity = this
 
     if (askForPermissions())
       loadData()
@@ -52,6 +54,8 @@ class MainActivity : AppCompatActivity() {
       viewPager.adapter = MyViewPagerAdapter(
         this,
         newArray)
+      viewPager.currentItem = Integer.MAX_VALUE / 2
+
     }
   }
 

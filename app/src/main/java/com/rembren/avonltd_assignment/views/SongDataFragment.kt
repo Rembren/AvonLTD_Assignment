@@ -1,18 +1,37 @@
 package com.rembren.avonltd_assignment.views
 
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.rembren.avonltd_assignment.classes.SongDataKt
+import androidx.lifecycle.ViewModelProviders
+import com.rembren.avonltd_assignment.models.SongDataKt
 import com.rembren.avonltd_assignment.databinding.FragmentSongDataBinding
 import com.rembren.avonltd_assignment.viewmodels.MainViewModel
 
 
 private const val SONG_DATA_INDEX = "song_data"
+
+@BindingAdapter("bitmap")
+fun setImageResource(imageView: ImageView, bitmap: Bitmap?) {
+  if (bitmap != null)
+    imageView.setImageBitmap(bitmap)
+}
+
+@BindingAdapter("gradientBackground")
+fun setBackgroundDrawable(layout: ConstraintLayout, gradientColors: GradientDrawable) {
+  layout.background = gradientColors
+}
+
 
 class SongDataFragment : Fragment() {
 
@@ -27,19 +46,31 @@ class SongDataFragment : Fragment() {
     arguments?.let {
       songDataIndex = it.getInt(SONG_DATA_INDEX)
     }
-  }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                            savedInstanceState: Bundle?): View {
-    Log.d("TAG1", "on createview")
-    val mainViewModel: MainViewModel by viewModels()
+    val mainViewModel: MainViewModel =
+      ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
     val dataArray = mainViewModel.getData().value
+
     if (dataArray == null) {
       throw IllegalStateException("data array is null $dataArray")
     }
+
     songDataKt = dataArray[songDataIndex!!]
+  }
+
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?): View {
+
     _binding = FragmentSongDataBinding.inflate(inflater, container, false)
+    _binding?.fragment = this
     return binding.root
+  }
+
+  override fun onResume() {
+    super.onResume()
+    activity?.window?.statusBarColor = songDataKt?.gradientColor!![0]
+    activity?.window?.navigationBarColor = songDataKt?.gradientColor!![2]
   }
 
   override fun onDestroyView() {
